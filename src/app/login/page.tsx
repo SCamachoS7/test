@@ -1,7 +1,6 @@
 // pages/login.tsx
 'use client'
-
-import Login from "../components/login";
+import Login from "../../components/login";
 
 const LoginPage: React.FC = () => {
   return <Login />;
