@@ -16,7 +16,7 @@ const Login: React.FC = () => {
 
     try {
       // Realizar la petición POST a la API usando fetch
-      const response = await fetch("https://api.dev.influstar.com/api/v1/login/user", {
+      const response = await fetch("https://api.yampi.co/login/email", {
         method: "POST",
         body: formData,
       });
