@@ -1,36 +1,41 @@
-// components/Login.tsx
-import { useState, FormEvent } from "react";
+// components/Login.jsx
+import React, { useState } from "react";
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = async (e: FormEvent) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Crear objeto FormData
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
+    const loginData = {
+      email,
+      password,
+    };
 
     try {
-      // Realizar la petición POST a la API usando fetch
       const response = await fetch("https://api.yampi.co/login/email", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
       });
 
       if (!response.ok) {
-        throw new Error("Error en la solicitud");
+        const errorMessage =
+          response.status === 409
+            ? "Este correo ya está registrado."
+            : "Error en la solicitud";
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
       console.log("Login exitoso", data);
-      // Redireccionar o realizar alguna acción en caso de login exitoso
+      // Aquí puedes manejar la redirección o alguna acción después del login exitoso
     } catch (error) {
-      console.error("Error en el login", error);
-      setError("Error en el inicio de sesión. Por favor, revisa tus credenciales.");
+      setError(error.message);
     }
   };
 
